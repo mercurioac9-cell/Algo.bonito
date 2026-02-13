@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modo Ultra Legendario+</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    background:linear-gradient(to bottom, #a1d9ff, #4fc3f7, #00bcd4);
+    font-family: Arial, sans-serif;
+    overflow:hidden;
+    transition:1.5s;
+}
+
+body.activo{
+    background:linear-gradient(to bottom, #ff9a9e, #fad0c4, #fbc2eb);
+}
+
+body.final-bueno{
+    background:linear-gradient(to bottom, #667eea, #764ba2);
+}
+
+body.final-malo{
+    background:linear-gradient(to bottom, #ff758c, #ff7eb3);
+}
+
+/* Textos iniciales */
+.arriba, .abajo{
+    position:absolute;
+    font-size:30px;
+    color:red;
+    font-weight:bold;
+    text-shadow:0 0 15px rgba(255,0,0,0.8);
+    transition:1s;
+}
+
+.arriba{ top:60px; }
+.abajo{ bottom:80px; }
+
+/* Rosa */
+.rosa{
+    width:330px;
+    animation:girar 8s linear infinite;
+    filter: drop-shadow(0 0 25px rgba(255,0,0,0.7));
+    transition:1s;
+}
+
+@keyframes girar{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+
+/* Mensaje principal */
+.mensaje{
+    position:absolute;
+    font-size:30px;
+    color:white;
+    font-weight:bold;
+    text-align:center;
+    opacity:0;
+    transform:scale(0.8);
+    transition:1.5s;
+    text-shadow:0 0 25px rgba(255,255,255,0.9);
+}
+
+/* Contenedor botones */
+.botones{
+    margin-top:40px;
+    display:flex;
+    gap:20px;
+    opacity:0;
+    transform:scale(0.8);
+    transition:1s;
+}
+
+/* Botones mejorados */
+.boton{
+    padding:12px 25px;
+    font-size:18px;
+    border:none;
+    border-radius:30px;
+    background:white;
+    color:#ff4d88;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.boton:active{
+    transform:scale(0.9);
+}
+
+/* Mensaje final */
+.sorpresa{
+    position:absolute;
+    font-size:28px;
+    color:white;
+    font-weight:bold;
+    text-align:center;
+    opacity:0;
+    transition:1.5s;
+}
+
+/* Corazones */
+.corazon{
+    position:absolute;
+    animation:subir 3s linear forwards;
+    pointer-events:none;
+}
+
+@keyframes subir{
+    0%{ transform:translateY(0); opacity:1; }
+    100%{ transform:translateY(-250px); opacity:0; }
+}
+
+/* Partículas */
+.particula{
+    position:absolute;
+    width:6px;
+    height:6px;
+    background:white;
+    border-radius:50%;
+    opacity:0.6;
+    animation:flotar linear infinite;
+    pointer-events:none;
+}
+
+@keyframes flotar{
+    from{ transform:translateY(100vh); opacity:0; }
+    to{ transform:translateY(-10vh); opacity:1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="arriba" id="arriba">
+    Este detalle es para ti... ❤️
+</div>
+
+<img class="rosa" id="rosa"
+src="https://pngimg.com/uploads/rose/rose_PNG659.png"
+onclick="activarUltra()">
+
+<div class="mensaje" id="mensaje"></div>
+
+<div class="botones" id="botones">
+    <button class="boton" onclick="finalBueno()">¿Sí te gustó? 💕</button>
+    <button class="boton" onclick="finalMalo()">¿No te gustó? 🙂</button>
+</div>
+
+<div class="sorpresa" id="sorpresa"></div>
+
+<div class="abajo" id="abajo">
+    Espero te guste ❤️
+</div>
+
+<script>
+
+function activarUltra(){
+
+    let rosa = document.getElementById("rosa");
+    let arriba = document.getElementById("arriba");
+    let abajo = document.getElementById("abajo");
+    let mensaje = document.getElementById("mensaje");
+    let botones = document.getElementById("botones");
+
+    rosa.style.opacity="0";
+    rosa.style.transform="scale(0.5)";
+    rosa.style.animation="none";
+    arriba.style.opacity="0";
+    abajo.style.opacity="0";
+
+    document.body.classList.add("activo");
+
+    for(let i=0;i<30;i++){
+        let corazon=document.createElement("div");
+        corazon.classList.add("corazon");
+        corazon.innerHTML="❤️";
+        corazon.style.left=Math.random()*100+"vw";
+        corazon.style.top=Math.random()*60+"vh";
+        corazon.style.fontSize=(20+Math.random()*25)+"px";
+        document.body.appendChild(corazon);
+        setTimeout(()=>{ corazon.remove(); },3000);
+    }
+
+    let texto="Eres más especial de lo que te imaginas❤️✨";
+    let i=0;
+    mensaje.style.opacity="1";
+    mensaje.style.transform="scale(1)";
+
+    let escribir=setInterval(()=>{
+        mensaje.innerHTML+=texto.charAt(i);
+        i++;
+        if(i>=texto.length){
+            clearInterval(escribir);
+            botones.style.opacity="1";
+            botones.style.transform="scale(1)";
+        }
+    },60);
+}
+
+function finalBueno(){
+    document.body.classList.remove("activo");
+    document.body.classList.add("final-bueno");
+
+    document.getElementById("mensaje").style.opacity="0";
+    document.getElementById("botones").style.opacity="0";
+
+    let sorpresa=document.getElementById("sorpresa");
+    sorpresa.innerHTML="Entonces valió la pena hacerlo solo para ti ❤️✨";
+    sorpresa.style.opacity="1";
+}
+
+function finalMalo(){
+    document.body.classList.remove("activo");
+    document.body.classList.add("final-malo");
+
+    document.getElementById("mensaje").style.opacity="0";
+    document.getElementById("botones").style.opacity="0";
+
+    let sorpresa=document.getElementById("sorpresa");
+    sorpresa.innerHTML="Entonces tendré que esforzarme más para la próxima ❤️🔥";
+    sorpresa.style.opacity="1";
+}
+
+for(let i=0;i<35;i++){
+    let p=document.createElement("div");
+    p.classList.add("particula");
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(6+Math.random()*4)+"s";
+    p.style.animationDelay=Math.random()*5+"s";
+    document.body.appendChild(p);
+}
+
+</script>
+
+</body>
+</html>
